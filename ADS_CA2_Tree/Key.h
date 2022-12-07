@@ -22,6 +22,21 @@ public:
 		rating = -1;
 		country = "Country";
 	}
+	bool operator<(const Key& other)
+	{
+		return user_id < other.user_id;
+	}
+	bool operator>(const Key& other)
+	{
+		return user_id > other.user_id;
+	}
+	bool operator==(const Key& other)
+	{
+		return user_id == other.user_id;
+	}
+	friend ostream& operator<<(ostream& out, const Key& other)
+	{
+		out << "{" << other.user_id << " from " << other.country << " rating is" << other.rating << "}";
+		return out;
+	}
 };
-
-

@@ -1,86 +1,88 @@
 #pragma once
 
-template <class T>
+template <typename K, typename E>
 class TNode
 {
+private:
+	K key;
+	E data;
 
-	TNode<T>* parent;
-	TNode<T>* left;
-	TNode<T>* right;
-	T data;
+	TNode* pLeft, * pRight;
 
 public:
 	TNode();
-	TNode(T data);
-	void setItem(T item);
+	TNode(K key, E data);
+	bool insert(K key, E data) {
+		return false;
+	}
+
+	void setData(E data) { this->data = data; }
+	E getData() const { return this->data; }
+	void setKey(K key) { this->key = key; }
+	E getKey() const { return this->key; }
+	TNode(K key, E data);
 	int count();
-	void add(T item);
-	TNode<T>* getParent();
-	TNode<T>* getLeft();
-	TNode<T>* getRight();
-	void setLeft(TNode<T>* l);
-	void setRight(TNode<T>* r);
-	T getItem();
+	void add(K key, E data);
+	TNode<K, E>* getParent();
+	TNode<K, E>* getLeft();
+	TNode<K, E>* getRight();
+	void setLeft(TNode<K, E>* l);
+	void setRight(TNode<K, E>* r);
 	~TNode();
 
 };
-template <class T>
-TNode<T>::~TNode()
+template <typename K, typename E>
+TNode<K, E>::~TNode()
 {
 	delete left;
 	delete right;
 }
-template <class T>
-T TNode<T>::getItem()
-{
-	return this->data;
-}
-template <class T>
-TNode<T>* TNode<T>::getLeft()
+template <typename K, typename E>
+TNode<K, E>* TNode<K,E>::getLeft()
 {
 	return this->left;
 }
-template <class T>
-TNode<T>* TNode<T>::getRight()
+template <typename K, typename E>
+TNode<K, E>* TNode<K,E>::getRight()
 {
 	return this->right;
 }
-template <class T>
-TNode<T>* TNode<T>::getParent()
+template <typename K, typename E>
+TNode<K,E>* TNode<K,E>::getParent()
 {
 	return this->parent;
 }
-template <class T>
-void TNode<T>::setLeft(TNode<T>* l)
+template <typename K, typename E>
+void TNode<K,E>::setLeft(TNode<K,E>* l)
 {
 	this->left = l;
 }
-template <class T>
-void TNode<T>::setRight(TNode<T>* r)
+template <typename K, typename E>
+void TNode<K,E>::setRight(TNode<K,E>* r)
 {
 	this->right = r;
 }
 
 
-template <class T>
-TNode<T>::TNode()
+template <typename K, typename E>
+TNode<K,E>::TNode()
 {
 	parent = nullptr;
 	left = nullptr;
 	right = nullptr;
 }
 
-
-template <class T>
-TNode<T>::TNode(T data)
+template <typename K, typename E>
+TNode<K,E>::TNode(K key, E data)
 {
 	parent = nullptr;
 	left = nullptr;
 	right = nullptr;
+	this->key = key;
 	this->data = data;
 }
-template <class T>
-int TNode<T>::count()
+template <typename K, typename E>
+int TNode<K,E>::count()
 {
 	int c = 1;
 	if (left != nullptr)
@@ -94,8 +96,8 @@ int TNode<T>::count()
 	return c;
 }
 
-template <class T>
-void TNode<T>::add(T item)
+template <typename K, typename E>
+void TNode<K,E>::add(K key, E data)
 {
 	if (item == this->data)
 	{
@@ -105,7 +107,7 @@ void TNode<T>::add(T item)
 	{
 		if (left == nullptr)
 		{
-			left = new BSTNode<T>();
+			left = new TNode<K,E>();
 			left->data = item;
 			left->parent = this;
 		}
@@ -118,7 +120,7 @@ void TNode<T>::add(T item)
 	{
 		if (right == nullptr)
 		{
-			right = new BSTNode<T>();
+			right = new TNode<K,E>();
 			right->data = item;
 			right->parent = this;
 		}
@@ -127,10 +129,4 @@ void TNode<T>::add(T item)
 			right->add(item);
 		}
 	}
-}
-
-template <class T>
-void TNode<T>::setItem(T item)
-{
-	this->data = item;
 }
