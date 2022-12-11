@@ -14,6 +14,7 @@ template <typename K, typename E>
 class BinaryTree
 {
 	void insertItem(TNode<K, E>* node, int& pos, int* arr);
+	//Depth
 	bool hasPath(TNode* root, vector<int>& arr, int x)
 	{
 		if (!root)
@@ -44,6 +45,56 @@ class BinaryTree
 		else
 			cout << "No Path";
 	}
+	//Height
+	vector<int> longestPath(TNode* root)
+	{
+
+		// If root is null means there
+		// is no binary tree so
+		// return a empty vector
+		if (root == NULL) {
+			vector<int> temp
+				= {};
+			return temp;
+		}
+
+		// Recursive call on root->right
+		vector<int> rightvect
+			= longestPath(root->setRight());
+
+		// Recursive call on root->left
+		vector<int> leftvect
+			= longestPath(root->setLeft());
+
+		// Compare the size of the two vectors
+		// and insert current node accordingly
+		if (leftvect.size() > rightvect.size())
+			leftvect.push_back(root->data);
+
+		else
+			rightvect.push_back(root->data);
+
+		// Return the appropriate vector
+		return (leftvect.size() > rightvect.size()
+			? leftvect
+			: rightvect);
+	}
+public:
+	TNode<K,E>* root;
+	BinaryTree();
+	//Insert & Delete
+	void insert(K key, E data);
+	bool remove(K key, E data);
+	void clear();
+	int count();
+	//Print
+	void printInOrder();
+	void printInOrder(TNode<K,E>* node);
+	void printPreOrder();
+	void printPreOrder(TNode<K,E>* node);
+	void printPostOrder();
+	void printPostOrder(TNode<K,E>* node);
+	//Balance
 	void createBalancedTree(BinaryTree<int>& tree, int min, int max, int* arr)
 	{
 		if (min < max)
@@ -62,23 +113,22 @@ class BinaryTree
 		createBalancedTree(tree, 0, max, arr);
 		delete[] arr;
 	}
-public:
-	TNode<K,E>* root;
-	BinaryTree();
-	void insert(K key, E data);
-	bool remove(K key, E data);
-	void clear();
-	int count();
-
-	void printInOrder();
-	void printInOrder(TNode<K,E>* node);
-	void printPreOrder();
-	void printPreOrder(TNode<K,E>* node);
-	void printPostOrder();
-	void printPostOrder(TNode<K,E>* node);
-	E* toArray(K);
+	E* toArray(K key);
 	~BinaryTree();
+	//Search
 	E* search(K key) {
+		E* temp = root;  
+		while (temp != nullptr) {
+			if (temp->data == K) {
+				return temp;
+			}
+			if (K > temp->data) {
+				temp = temp->right;
+			}
+			else {
+				temp = temp->left;
+			}
+		}
 		return nullptr;
 	}
 
@@ -88,7 +138,6 @@ BinaryTree<K,E>::BinaryTree()
 {
 	root = nullptr;
 }
-
 template <typename K, typename E>
 void BinaryTree<K,E>::insert(K key, E data)
 {
@@ -200,7 +249,7 @@ void BinaryTree<K,E>::insertItem(TNode<K,E>* node, int& pos, int* arr)
 }
 
 template <typename K, typename E>
-E* BinaryTree<K,E>::toArray(K)
+E* BinaryTree<K,E>::toArray(K key)
 {
 	E* arr = new E[root->count()];
 	int pos = 0;

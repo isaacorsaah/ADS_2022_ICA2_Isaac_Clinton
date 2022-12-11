@@ -15,7 +15,7 @@ public:
 	bool insert(K key, E data) {
 		return false;
 	}
-
+	
 	void setData(E data) { this->data = data; }
 	E getData() const { return this->data; }
 	void setKey(K key) { this->key = key; }
